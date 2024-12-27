@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "389070802659",
+    "project_id": "wqfashion-98f4b",
+    "storage_bucket": "wqfashion-98f4b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389070802659:android:defe1f6079d32ed134bfd6",
+        "android_client_info": {
+          "package_name": "com.example.levis_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389070802659-mmjcg2rc287schpsd7ca6053j8uqf4su.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvQN3U74Qn3cVu_ehsiN4ekmaCeaJ2o1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389070802659-mmjcg2rc287schpsd7ca6053j8uqf4su.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "389070802659-sm83sp9mglqbptiik3s2nnilndqtquk4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wqFashion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
