@@ -64,7 +64,16 @@ class HomeController extends GetxController {
     Get.toNamed(RoutesName.cartPage);
   }
 
-  void onTapCategory() {
-    Get.toNamed(RoutesName.cartPage);
+  void onTapCategory(Category category) {
+    Get.toNamed(RoutesName.categoryPage,
+        arguments: {'categoryId': category.id});
+  }
+
+  void onTapSeeAllCategory() {
+    Get.toNamed(RoutesName.allCategoryPage);
+  }
+
+  void onTapSeeAllProduct() {
+    Get.toNamed(RoutesName.allProductPage);
   }
 }

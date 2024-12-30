@@ -2,10 +2,13 @@ import 'package:get/get.dart';
 import 'package:levis_store/pages/address/address_add_page.dart';
 import 'package:levis_store/pages/address/address_page.dart';
 import 'package:levis_store/pages/cart/cart_page.dart';
+import 'package:levis_store/pages/category/all_category_page.dart';
+import 'package:levis_store/pages/category/category_page.dart';
 import 'package:levis_store/pages/notification/notification_page.dart';
 import 'package:levis_store/pages/order/order_page.dart';
 import 'package:levis_store/pages/order/order_status_page.dart';
 import 'package:levis_store/pages/order/payment_method_page.dart';
+import 'package:levis_store/pages/product/all_product_page.dart';
 import 'package:levis_store/pages/product_detail/product_detail_page.dart';
 import 'package:levis_store/routes/main_page.dart';
 import 'package:levis_store/routes/routes_name.dart';
@@ -92,6 +95,21 @@ class AppRoutes {
         GetPage(
             name: RoutesName.notificationPage,
             page: () => const NotificationPage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.categoryPage,
+            page: () => const CategoryPage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.allCategoryPage,
+            page: () => AllCategoryPage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.allProductPage,
+            page: () => AllProductPage(),
             transitionDuration: const Duration(milliseconds: 250),
             transition: Transition.cupertino),
       ];

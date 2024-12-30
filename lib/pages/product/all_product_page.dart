@@ -1,35 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:levis_store/pages/category/category_controller.dart';
 
 import '../../widgets/curated_items.dart';
+import '../home/home_controller.dart';
 
-class CategoryPage extends StatefulWidget {
-  const CategoryPage({super.key});
+class AllProductPage extends StatefulWidget {
+  AllProductPage({super.key});
 
   @override
-  State<CategoryPage> createState() => _CategoryPageState();
+  State<AllProductPage> createState() => _AllProductPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage> {
-  var categoryId = "";
-  final CategoryController controller = Get.put(CategoryController());
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    categoryId = Get.arguments['categoryId'] ?? "";
-    print(categoryId);
-    controller.fetchProductByCategoryId(categoryId);
-    super.initState();
-  }
+class _AllProductPageState extends State<AllProductPage> {
+  final HomeController controller =
+      Get.put(tag: DateTime.now().toString(), HomeController());
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Category $categoryId"),
+        title: Text("Products"),
       ),
       body: SizedBox(
         height: size.height,

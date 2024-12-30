@@ -12,7 +12,7 @@ class CuratedItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Column(
         children: [
           Hero(
@@ -51,8 +51,10 @@ class CuratedItems extends StatelessWidget {
                 Text(
                   "LEVI'S",
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.inversePrimary),
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    fontSize: 10,
+                  ),
                 ),
                 const SizedBox(
                   width: 5,
@@ -65,22 +67,10 @@ class CuratedItems extends StatelessWidget {
                 Text(
                   "5.0",
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary),
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    fontSize: 10,
+                  ),
                 ),
-                // Text("${product.buyCount}"),
-                // SizedBox(
-                //   width: size.width * 0.4, // Kích thước bằng chiều rộng của ảnh
-                //   child: Text(
-                //     product.name,
-                //     maxLines: 2, // Hiển thị tối đa 1 dòng
-                //     overflow:
-
-                //         TextOverflow.ellipsis, // Thêm dấu "..." nếu text quá dài
-                //     style: const TextStyle(
-                //       color: Colors.black26,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -91,16 +81,17 @@ class CuratedItems extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                  fontWeight: FontWeight.w600, fontSize: 14, height: 1.5),
+                  fontWeight: FontWeight.w600, fontSize: 12, height: 1.5),
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 Validator.formatCurrency(product.price),
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: 14,
                   height: 1.5,
                   color: Colors.red,
                 ),
@@ -109,11 +100,11 @@ class CuratedItems extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                Validator.formatCurrency(
-                    product.price + 600000), // Cộng giá trị trước khi định dạng
+                Validator.formatCurrency(product.price + 600000),
+                // Cộng giá trị trước khi định dạng
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontSize: 10,
                   height: 1.5,
                   decoration: TextDecoration.lineThrough,
                   color: Theme.of(context).colorScheme.primary,

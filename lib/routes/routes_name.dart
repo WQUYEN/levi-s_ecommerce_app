@@ -16,4 +16,7 @@ class RoutesName {
   static const String orderPageByStatus = '/orderPageByStatus';
   static const String paymentMethodPage = '/paymentMethodPage';
   static const String notificationPage = '/notificationPage';
+  static const String categoryPage = '/categoryPage';
+  static const String allCategoryPage = '/allCategoryPage';
+  static const String allProductPage = '/allProductPage';
 }

@@ -126,11 +126,16 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      "See All",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.primary,
+                    InkWell(
+                      onTap: () {
+                        controller.onTapSeeAllCategory();
+                      },
+                      child: Text(
+                        "See All",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     )
                   ],
@@ -157,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Get.snackbar("Levi's Store", "message");
+                                  controller.onTapCategory(category);
                                 },
                                 child: ClipOval(
                                   child: Image.network(
@@ -216,11 +221,16 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      "See All",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.primary,
+                    InkWell(
+                      onTap: () {
+                        controller.onTapSeeAllProduct();
+                      },
+                      child: Text(
+                        "See All",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     )
                   ],

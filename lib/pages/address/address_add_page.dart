@@ -218,7 +218,7 @@ class AddressAddPage extends StatelessWidget {
 
                     if (phoneNumber.isEmpty || phoneNumber.length < 10) {
                       Get.snackbar(
-                          "Error", "Please enter a valid phone number");
+                          "Error", "Please enter a valid phone numberz");
                       return;
                     }
 
