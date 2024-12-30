@@ -24,31 +24,31 @@ class PaymentMethodPage extends StatelessWidget {
                 controller.selectPaymentMethod(paymentMethod: 1);
                 Get.back();
               },
-              child: Expanded(
-                child: Container(
-                  height: size.height / 15,
-                  width: size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primary),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "Thanh toán qua ví ZaloPay",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Image.asset(
-                        "assets/zalopay_logo_1.png",
-                        height: 24,
-                      ),
-                    ],
+              child: Container(
+                height: size.height / 15,
+                width: size.width,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "Thanh toán qua ví ZaloPay",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Image.asset(
+                      "assets/zalopay_logo_1.png",
+                      height: 24,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -60,36 +60,33 @@ class PaymentMethodPage extends StatelessWidget {
                 controller.selectPaymentMethod(paymentMethod: 2);
                 Get.back();
               },
-              child: Expanded(
-                child: Container(
-                  height: size.height / 15,
-                  width: size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primary),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "Thanh toán qua ví khi nhận hàng",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Image.asset(
-                        "assets/flying-money.png",
-                        height: 40,
-                      ),
-                    ],
+              child: Container(
+                height: size.height / 15,
+                width: size.width,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "Thanh toán qua ví khi nhận hàng",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Image.asset(
+                      "assets/flying-money.png",
+                      height: 40,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
             ),
           ],
         ),

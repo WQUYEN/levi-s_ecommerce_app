@@ -19,4 +19,5 @@ class RoutesName {
   static const String categoryPage = '/categoryPage';
   static const String allCategoryPage = '/allCategoryPage';
   static const String allProductPage = '/allProductPage';
+  static const String favoritePage = '/favoritePage';
 }

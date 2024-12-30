@@ -1,6 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -10,13 +8,13 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  RemoteMessage? message;
+  // RemoteMessage? message;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    message = Get.arguments['message'] ?? '';
+    // message = Get.arguments['message'] ?? '';
   }
 
   @override
@@ -25,9 +23,9 @@ class _NotificationPageState extends State<NotificationPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(message!.notification!.title.toString()),
-          Text(message!.notification!.body.toString()),
-          Text(message!.notification!.title.toString()),
+          // Text(message!.notification!.title.toString()),
+          // Text(message!.notification!.body.toString()),
+          // Text(message!.notification!.title.toString()),
         ],
       ),
     );

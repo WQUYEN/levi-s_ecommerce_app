@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:levis_store/pages/favorite/favorite_controller.dart';
 
 import '../../widgets/curated_items.dart';
-import '../home/home_controller.dart';
 
-class AllProductPage extends StatefulWidget {
-  const AllProductPage({super.key});
+class FavoritePage extends StatefulWidget {
+  const FavoritePage({super.key});
 
   @override
-  State<AllProductPage> createState() => _AllProductPageState();
+  State<FavoritePage> createState() => _FavoritePageState();
 }
 
-class _AllProductPageState extends State<AllProductPage> {
-  final HomeController controller = Get.put(HomeController());
+class _FavoritePageState extends State<FavoritePage> {
+  final FavoriteController controller = Get.put(FavoriteController());
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    controller;
-    super.dispose();
+  void initState() {
+    // TODO: implement initState
+    controller.fetchProductFavoriteByUserId();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Favorites"),
       ),
       body: SizedBox(
         height: size.height,

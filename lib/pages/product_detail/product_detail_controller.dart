@@ -25,6 +25,7 @@ class ProductDetailController extends GetxController {
   var maxQuantity = 0;
   var currentIndex = 0.obs;
   final CartController cartController = Get.put(CartController());
+  var isFavorite = false.obs;
 
   @override
   void onClose() {
@@ -32,8 +33,150 @@ class ProductDetailController extends GetxController {
     cartController;
   }
 
+  Future<void> checkFavorite({required String productId}) async {
+    try {
+      final UserInfoService userInfoService = UserInfoService();
+      String userId = userInfoService.getUid() ?? "";
+
+      if (userId.isEmpty) {
+        isFavorite.value = false;
+        return;
+      }
+
+      final firestore = FirebaseFirestore.instance;
+
+      final querySnapshot = await firestore
+          .collection('favorites')
+          .where('userId', isEqualTo: userId)
+          .where('productId', isEqualTo: productId)
+          .get();
+
+      isFavorite.value = querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print("Failed to check favorite status: $e");
+      isFavorite.value = false;
+    }
+  }
+
+  void addFavorite({required String productId}) async {
+    try {
+      final UserInfoService userInfoService = UserInfoService();
+      String userId = userInfoService.getUid() ?? "";
+
+      if (userId.isEmpty) {
+        Get.snackbar(
+          "Error",
+          "User not logged in.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        );
+        return;
+      }
+
+      final firestore = FirebaseFirestore.instance;
+
+      // Kiểm tra xem sản phẩm đã có trong favorites chưa
+      final querySnapshot = await firestore
+          .collection('favorites')
+          .where('userId', isEqualTo: userId)
+          .where('productId', isEqualTo: productId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Get.snackbar(
+          "Favorites",
+          "This product is already in your favorites.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 2),
+        );
+        return;
+      }
+
+      // Thêm sản phẩm vào favorites
+      await firestore.collection('favorites').add({
+        'userId': userId,
+        'productId': productId,
+        'addedAt': FieldValue.serverTimestamp(),
+      });
+
+      // Get.snackbar(
+      //   "Favorites",
+      //   "Product added to favorites successfully.",
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   backgroundColor: Colors.green,
+      //   duration: const Duration(seconds: 2),
+      // );
+    } catch (e) {
+      print("Failed to add product to favorites: $e");
+      Get.snackbar(
+        "Error",
+        "Failed to add product to favorites. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2),
+      );
+    }
+  }
+
   void updateCurrentIndex(int index) {
     currentIndex.value = index;
+  }
+
+// Xóa sản phẩm khỏi danh sách yêu thích
+  Future<void> removeFavorite({required String productId}) async {
+    try {
+      final UserInfoService userInfoService = UserInfoService();
+      String userId = userInfoService.getUid() ?? "";
+
+      if (userId.isEmpty) {
+        return;
+      }
+
+      final firestore = FirebaseFirestore.instance;
+
+      // Query để tìm sản phẩm yêu thích của userId và productId
+      final querySnapshot = await firestore
+          .collection('favorites')
+          .where('userId', isEqualTo: userId)
+          .where('productId', isEqualTo: productId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Lấy document đầu tiên (nếu có)
+        final doc = querySnapshot.docs.first;
+
+        // Xóa sản phẩm khỏi collection 'favorites'
+        await doc.reference.delete();
+
+        isFavorite.value = false;
+        // Get.snackbar(
+        //   "Favorites",
+        //   "Product removed from favorites.",
+        //   snackPosition: SnackPosition.BOTTOM,
+        //   backgroundColor: Colors.orange,
+        //   duration: const Duration(seconds: 2),
+        // );
+      } else {
+        Get.snackbar(
+          "Error",
+          "Product not found in favorites.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } catch (e) {
+      print("Failed to remove product from favorites: $e");
+      Get.snackbar(
+        "Error",
+        "Failed to remove product from favorites. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2),
+      );
+    }
   }
 
   Future<void> fetchProductWithDetails(String productId) async {
@@ -42,7 +185,7 @@ class ProductDetailController extends GetxController {
       errorMessage.value = '';
       imageUrls.value = [];
       availableSizes.value = [];
-
+      await checkFavorite(productId: productId);
       // Lấy dữ liệu product
       final productDoc = await FirebaseFirestore.instance
           .collection('products')

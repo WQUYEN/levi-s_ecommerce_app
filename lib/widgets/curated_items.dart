@@ -27,17 +27,17 @@ class CuratedItems extends StatelessWidget {
               ),
               height: size.height * 0.23,
               width: size.width * 0.4,
-              child: const Padding(
-                padding: EdgeInsets.all(12),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Colors.black26,
-                    child: Icon(Icons.favorite_border),
-                  ),
-                ),
-              ),
+              // child: const Padding(
+              //   padding: EdgeInsets.all(12),
+              //   child: Align(
+              //     alignment: Alignment.topRight,
+              //     child: CircleAvatar(
+              //       radius: 18,
+              //       backgroundColor: Colors.black26,
+              //       child: Icon(Icons.favorite_border),
+              //     ),
+              //   ),
+              // ),
             ),
           ),
           const SizedBox(

@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
               // Không cần xuất hiện lại khi cuộn lên
               snap: false,
               pinned: true,
+              automaticallyImplyLeading: false,
               // Giữ cố định khi cuộn
               backgroundColor: Theme.of(context).colorScheme.surface,
               expandedHeight: size.height / 16,

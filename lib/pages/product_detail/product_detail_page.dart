@@ -141,6 +141,50 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
+  Row buildRatingBar(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          "LEVI'S",
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.inversePrimary,
+              fontSize: 10),
+        ),
+        const SizedBox(width: 5),
+        const Icon(
+          Icons.star,
+          color: Colors.amber,
+          size: 15,
+        ),
+        Text(
+          "5.0",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              fontSize: 10),
+        ),
+        const Spacer(),
+        IconButton(
+          onPressed: () {
+            if (controller.isFavorite.value) {
+              // Logic để xóa khỏi favorites
+              controller.removeFavorite(productId: productId);
+            } else {
+              controller.addFavorite(productId: productId);
+              controller.isFavorite.value = true;
+            }
+          },
+          icon: Obx(() => Icon(
+                controller.isFavorite.value
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                color: controller.isFavorite.value ? Colors.pink : Colors.grey,
+              )),
+        )
+      ],
+    );
+  }
+
   buildBuyNowBtn(BuildContext context) {
     return Expanded(
       child: CommonWidget.button(
@@ -542,34 +586,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         fontSize: 16,
         height: 1.5,
       ),
-    );
-  }
-
-  Row buildRatingBar(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          "LEVI'S",
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.inversePrimary,
-              fontSize: 10),
-        ),
-        const SizedBox(width: 5),
-        const Icon(
-          Icons.star,
-          color: Colors.amber,
-          size: 15,
-        ),
-        Text(
-          "5.0",
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.inversePrimary,
-              fontSize: 10),
-        ),
-        const Spacer(),
-        const Icon(Icons.favorite_border)
-      ],
     );
   }
 

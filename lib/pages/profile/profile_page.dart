@@ -66,27 +66,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).colorScheme.inversePrimary,
                     fontSize: 16),
               ),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // SizedBox(
-              //   width: size.width * 0.5,
-              //   height: 60,
-              //   child: ElevatedButton(
-              //     onPressed: () {},
-              //     style: ElevatedButton.styleFrom(
-              //         backgroundColor: Colors.red,
-              //         side: BorderSide.none,
-              //         shape: const StadiumBorder()),
-              //     child: const Text(
-              //       "Edit Profile",
-              //       style: TextStyle(color: Colors.white),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 30,
-              // ),
               const Divider(
                 color: Colors.transparent,
               ),
@@ -104,10 +83,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 10,
               ),
               CommonWidget.profileBtn(
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(RoutesName.favoritePage);
+                  },
                   context: context,
-                  text: "User Management",
-                  iconData: Icons.perm_identity_sharp),
+                  text: "Favorites",
+                  iconData: Icons.favorite),
               const SizedBox(
                 height: 10,
               ),

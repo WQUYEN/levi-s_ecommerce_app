@@ -223,6 +223,35 @@ class OrderController extends GetxController {
         'userId': selectedItems.first.userId,
         'isPayment': isPayment,
       });
+      // for (var item in selectedItems) {
+      //   // Lấy document màu sắc đã chọn
+      //   var colorDoc = FirebaseFirestore.instance
+      //       .collection('colors')
+      //       .doc(item.selectedColor);
+      //   var colorSnapshot = await colorDoc.get();
+      //
+      //   if (colorSnapshot.exists) {
+      //     var colorData = colorSnapshot.data()!;
+      //     var sizes = colorData['size']; // Danh sách các size của màu sắc này
+      //
+      //     // Duyệt qua các size của màu sắc này và cập nhật số lượng
+      //     var sizeDoc = colorDoc.collection('size').doc(item.selectedSize);
+      //     var sizeSnapshot = await sizeDoc.get();
+      //
+      //     if (sizeSnapshot.exists) {
+      //       var sizeData = sizeSnapshot.data()!;
+      //       int currentQuantity =
+      //           sizeData['quantity'] ?? 0; // Số lượng hiện tại của size
+      //       int newQuantity = currentQuantity -
+      //           item.quantity; // Trừ số lượng theo số lượng đã đặt
+      //
+      //       // Cập nhật lại số lượng trong collection 'sizes'
+      //       await sizeDoc.update({
+      //         'quantity': newQuantity,
+      //       });
+      //     }
+      //   }
+      // }
 
       // Xóa các item đã chọn trong collection 'carts'
       for (var item in selectedItems) {
@@ -231,6 +260,7 @@ class OrderController extends GetxController {
             .doc(item.id)
             .delete();
       }
+      await updateProductStock(selectedItems);
       Get.back();
       Get.offNamed(RoutesName.successPage);
       Get.snackbar("Levi's Store", "Order placed successfully!",
@@ -241,6 +271,63 @@ class OrderController extends GetxController {
       Get.snackbar("Levi's Store", "Failed to place order. Please try again.");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> updateProductStock(List<Cart> selectedItems) async {
+    try {
+      for (var item in selectedItems) {
+        // Truy vấn màu sắc theo trường 'name'
+        var colorQuerySnapshot = await FirebaseFirestore.instance
+            .collection('colors')
+            .where('name', isEqualTo: item.selectedColor)
+            .get();
+
+        if (colorQuerySnapshot.docs.isNotEmpty) {
+          var colorDoc = colorQuerySnapshot.docs.first;
+
+          // Truy vấn size theo trường 'size' trong collection con 'size'
+          var sizeQuerySnapshot = await FirebaseFirestore.instance
+              .collection('colors')
+              .doc(colorDoc.id) // ID của tài liệu màu sắc
+              .collection('size')
+              .where('size', isEqualTo: item.selectedSize)
+              .get();
+
+          if (sizeQuerySnapshot.docs.isNotEmpty) {
+            var sizeDoc = sizeQuerySnapshot.docs.first;
+            var sizeData = sizeDoc.data();
+            int currentQuantity =
+                sizeData['quantity'] ?? 0; // Số lượng hiện tại
+            int newQuantity = currentQuantity - item.quantity; // Trừ số lượng
+
+            if (newQuantity < 0) {
+              print("Not enough stock for size: ${item.selectedSize}");
+              continue;
+            }
+
+            // Cập nhật lại số lượng trong collection 'size'
+            await sizeDoc.reference.update({
+              'quantity': newQuantity,
+            });
+
+            print(
+                "Updated stock for color: ${item.selectedColor}, size: ${item.selectedSize}, new quantity: $newQuantity");
+          } else {
+            print(
+                "Size not found for color: ${item.selectedColor}, size: ${item.selectedSize}");
+          }
+        } else {
+          print("Color not found: ${item.selectedColor}");
+        }
+      }
+
+      Get.snackbar("Levi's Store", "Stock updated successfully!",
+          backgroundColor: Colors.green, colorText: Colors.white);
+    } catch (e) {
+      print("Error updating stock: $e");
+      Get.snackbar("Levi's Store", "Failed to update stock. Please try again.",
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 }

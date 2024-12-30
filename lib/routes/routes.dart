@@ -4,6 +4,7 @@ import 'package:levis_store/pages/address/address_page.dart';
 import 'package:levis_store/pages/cart/cart_page.dart';
 import 'package:levis_store/pages/category/all_category_page.dart';
 import 'package:levis_store/pages/category/category_page.dart';
+import 'package:levis_store/pages/favorite/favorite_page.dart';
 import 'package:levis_store/pages/notification/notification_page.dart';
 import 'package:levis_store/pages/order/order_page.dart';
 import 'package:levis_store/pages/order/order_status_page.dart';
@@ -109,7 +110,12 @@ class AppRoutes {
             transition: Transition.cupertino),
         GetPage(
             name: RoutesName.allProductPage,
-            page: () => AllProductPage(),
+            page: () => const AllProductPage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.favoritePage,
+            page: () => const FavoritePage(),
             transitionDuration: const Duration(milliseconds: 250),
             transition: Transition.cupertino),
       ];
