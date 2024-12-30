@@ -66,12 +66,6 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Lottie.network(
-                        //   "https://lottie.host/7c413d24-257a-448c-b8a0-ad6912a0df8e/ZsjUqTOUnG.json",
-                        //   width: 110,
-                        //   height: 60,
-                        //   fit: BoxFit.fill,
-                        // ),
                         Image.asset(
                           "assets/levi's_logo.png",
                           width: 80,
@@ -162,21 +156,22 @@ class _HomePageState extends State<HomePage> {
                           //   child: Text("Error"),
                           // );
                         }
-                        return InkWell(
-                          onTap: () {
-                            Get.snackbar("Levi's", "Click item category");
-                          },
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.categories.length,
-                            itemBuilder: (context, index) {
-                              final category = controller.categories[index];
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Column(
-                                  children: [
-                                    ClipOval(
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.categories.length,
+                          itemBuilder: (context, index) {
+                            final category = controller.categories[index];
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Thực hiện hành động khi nhấn
+                                      Get.snackbar("Levi's Store", "message");
+                                    },
+                                    child: ClipOval(
                                       child: Image.network(
                                         category.imageUrl,
                                         width: 60,
@@ -200,18 +195,18 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      category.name,
-                                      style: const TextStyle(fontSize: 14),
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    category.name,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         );
                       }),
                     ),

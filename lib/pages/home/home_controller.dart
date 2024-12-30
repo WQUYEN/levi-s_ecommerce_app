@@ -63,4 +63,8 @@ class HomeController extends GetxController {
   void onTapCartIcon() {
     Get.toNamed(RoutesName.cartPage);
   }
+
+  void onTapCategory() {
+    Get.toNamed(RoutesName.cartPage);
+  }
 }

@@ -15,4 +15,5 @@ class RoutesName {
   static const String addAddressPage = '/addAddressPage';
   static const String orderPageByStatus = '/orderPageByStatus';
   static const String paymentMethodPage = '/paymentMethodPage';
+  static const String notificationPage = '/notificationPage';
 }

@@ -270,19 +270,24 @@ class OrderPage extends StatelessWidget {
       flex: 2,
       child: GestureDetector(
         onTap: () async {
-          if (controller.selectedPaymentMethod.value == 1) {
-            String zpToken = await controller.createOrder1(totalPrice);
-            if (zpToken.isNotEmpty) {
-              controller.payOrder(zpToken, selectedItems, totalPrice, true);
+          if (controller.selectedAddress.value == null) {
+            Get.snackbar("Levi's Store", "Please select address",
+                backgroundColor: Colors.red, colorText: Colors.white);
+          } else {
+            if (controller.selectedPaymentMethod.value == 1) {
+              String zpToken = await controller.createOrder1(totalPrice);
+              if (zpToken.isNotEmpty) {
+                controller.payOrder(zpToken, selectedItems, totalPrice, true);
+              } else {
+                Get.snackbar("Levi's Store", "Failed to create order",
+                    backgroundColor: Colors.red, colorText: Colors.white);
+              }
+            } else if (controller.selectedPaymentMethod.value == 2) {
+              controller.onTapOrder(selectedItems, totalPrice, false);
             } else {
-              Get.snackbar("Levi's Store", "Failed to create order",
+              Get.snackbar("Levi's Store", "Please select payment method",
                   backgroundColor: Colors.red, colorText: Colors.white);
             }
-          } else if (controller.selectedPaymentMethod.value == 2) {
-            controller.onTapOrder(selectedItems, totalPrice, false);
-          } else {
-            Get.snackbar("Levi's Store", "Please select payment method",
-                backgroundColor: Colors.red, colorText: Colors.white);
           }
         },
         child: Container(

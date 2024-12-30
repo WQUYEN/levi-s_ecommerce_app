@@ -6,6 +6,7 @@ import '../models/product.dart';
 class CuratedItems extends StatelessWidget {
   final Product product;
   final Size size;
+
   const CuratedItems({super.key, required this.product, required this.size});
 
   @override
@@ -14,24 +15,27 @@ class CuratedItems extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(product.primaryImage),
+          Hero(
+            tag: product.primaryImage,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(product.primaryImage),
+                ),
               ),
-            ),
-            height: size.height * 0.23,
-            width: size.width * 0.4,
-            child: const Padding(
-              padding: EdgeInsets.all(12),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.black26,
-                  child: Icon(Icons.favorite_border),
+              height: size.height * 0.23,
+              width: size.width * 0.4,
+              child: const Padding(
+                padding: EdgeInsets.all(12),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.black26,
+                    child: Icon(Icons.favorite_border),
+                  ),
                 ),
               ),
             ),

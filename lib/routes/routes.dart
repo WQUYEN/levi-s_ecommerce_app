@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:levis_store/pages/address/address_add_page.dart';
 import 'package:levis_store/pages/address/address_page.dart';
 import 'package:levis_store/pages/cart/cart_page.dart';
+import 'package:levis_store/pages/notification/notification_page.dart';
 import 'package:levis_store/pages/order/order_page.dart';
 import 'package:levis_store/pages/order/order_status_page.dart';
 import 'package:levis_store/pages/order/payment_method_page.dart';
@@ -86,6 +87,11 @@ class AppRoutes {
         GetPage(
             name: RoutesName.paymentMethodPage,
             page: () => PaymentMethodPage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.notificationPage,
+            page: () => const NotificationPage(),
             transitionDuration: const Duration(milliseconds: 250),
             transition: Transition.cupertino),
       ];
