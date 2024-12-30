@@ -9,18 +9,40 @@ import 'package:levis_store/widgets/common_widget.dart';
 import '../../utils/validator.dart';
 import '../../widgets/cart_item.dart';
 
-class OrderPage extends StatelessWidget {
+class OrderPage extends StatefulWidget {
   OrderPage({super.key});
 
+  @override
+  State<OrderPage> createState() => _OrderPageState();
+}
+
+class _OrderPageState extends State<OrderPage> {
   final OrderController controller = Get.put(OrderController());
+  var totalPrice = 0.0;
+  List<Cart> selectedItems = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    totalPrice = Get.arguments['totalPrice'] ?? 0;
+    selectedItems = Get.arguments['selectedItems'] ?? '';
+    controller.getDefaultAddress();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // Lắng nghe khi màn hình quay trở lại
+  //   if (Get.routing.isBack == true) {
+  //     controller.getDefaultAddress();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    var totalPrice = Get.arguments['totalPrice'] ?? '';
-    List<Cart> selectedItems = Get.arguments['selectedItems'] ?? '';
     Size size = MediaQuery.of(context).size;
     final floatBtnHeight = size.height / 17;
-    controller.getDefaultAddress();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       appBar: AppBar(

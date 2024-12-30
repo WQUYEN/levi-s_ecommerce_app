@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:levis_store/models/address.dart';
+import 'package:levis_store/pages/order/order_controller.dart';
 import 'package:levis_store/services/user_info_service.dart';
 import 'package:vn_provinces/province.dart';
 import 'package:vn_provinces/vn_provinces.dart';
@@ -10,6 +11,24 @@ class AddressController extends GetxController {
   final vnProvinces = VNProvinces();
   final userId = UserInfoService().getUid();
   var addressList = <Address>[].obs;
+  final OrderController orderController =
+      Get.put(tag: DateTime.now().toString(), OrderController());
+  final FocusNode nameFocusNode = FocusNode();
+  final FocusNode phoneNumberFocusNode = FocusNode();
+  final FocusNode houseNumberFocusNode = FocusNode();
+
+  @override
+  void onClose() {
+    nameFocusNode.dispose();
+    phoneNumberFocusNode.dispose();
+    houseNumberFocusNode.dispose();
+    super.onClose();
+  }
+
+  @override
+  void dispose() {
+    orderController;
+  }
 
   Rx<VNProvince?> selectedProvince = Rx<VNProvince?>(null);
   Rx<VNDistrict?> selectedDistrict = Rx<VNDistrict?>(null);
@@ -119,6 +138,35 @@ class AddressController extends GetxController {
     }
   }
 
+  void onTapDelete(String addressId) async {
+    try {
+      isLoading.value = true;
+
+      // Xóa địa chỉ từ Firestore theo ID
+      await FirebaseFirestore.instance
+          .collection("address")
+          .doc(addressId)
+          .delete();
+
+      // Tải lại danh sách địa chỉ sau khi xóa
+      await fetchAddressByUserId();
+
+      Get.snackbar(
+        "Levi's Store",
+        "Address has been successfully deleted.",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      Get.snackbar(
+        "Levi's Store",
+        "Failed to delete address. Please try again. $e",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> updateDefaultAddress(String selectedAddressId) async {
     try {
       isLoading.value = true;
@@ -140,6 +188,7 @@ class AddressController extends GetxController {
 
       // Làm mới danh sách địa chỉ
       await fetchAddressByUserId();
+      orderController.getDefaultAddress();
       Get.snackbar("Levi's Store", "Default address updated successfully.");
     } catch (e) {
       Get.snackbar("Levi's Store",

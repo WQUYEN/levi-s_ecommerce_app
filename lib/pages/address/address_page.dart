@@ -38,21 +38,73 @@ class _AddressPageState extends State<AddressPage> {
             itemCount: addressController.addressList.length,
             itemBuilder: (context, index) {
               final item = addressController.addressList[index];
-              return GestureDetector(
-                onTap: () {
-                  print("Click item");
+              return Dismissible(
+                key: Key(item.id.toString()),
+                // Khóa duy nhất cho mỗi item
+                direction: DismissDirection.endToStart,
+                // Vuốt từ phải sang trái
+                background: Container(
+                  color: Colors.red, // Màu nền khi vuốt
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+                onDismissed: (direction) {
+                  // Xử lý hành động xóa
+                  addressController.onTapDelete(item.id);
+                  Get.snackbar(
+                    "Address Deleted",
+                    "The address has been successfully removed.",
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
                 },
-                child: Column(
-                  children: [
-                    CommonWidget.addressItem(
+                confirmDismiss: (direction) async {
+                  // Hiển thị hộp thoại xác nhận trước khi xóa
+                  return await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Confirm Delete"),
+                        content: const Text(
+                            "Are you sure you want to delete this address?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false); // Không xóa
+                            },
+                            child: const Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true); // Xác nhận xóa
+                            },
+                            child: const Text("Delete"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: GestureDetector(
+                  onTap: () {
+                    print("Click item");
+                  },
+                  child: Column(
+                    children: [
+                      CommonWidget.addressItem(
                         context: context,
                         address: item,
                         isAddressList: true,
                         isDefault: item.isDefault,
                         onTap: () {
                           addressController.updateDefaultAddress(item.id);
-                        })
-                  ],
+                        },
+                      )
+                    ],
+                  ),
                 ),
               );
             },

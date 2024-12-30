@@ -29,6 +29,18 @@ class OrderController extends GetxController {
   var payAmount = '10000'.obs;
   var showResult = false.obs;
 
+  @override
+  void onReady() {
+    super.onReady();
+    getDefaultAddress();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    getDefaultAddress(); // Lấy địa chỉ mặc định khi khởi tạo controller
+  }
+
   Future<String> createOrder1(double totalPrice) async {
     if (totalPrice <= 0) {
       Get.snackbar(
