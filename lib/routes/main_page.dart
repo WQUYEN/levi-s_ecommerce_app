@@ -17,7 +17,7 @@ class _MainPageState extends State<MainPage> {
 
   final List pages = [
     const HomePage(),
-    const SearchPage(),
+    SearchPage(),
     const NotificationPage(),
     const ProfilePage(),
   ];

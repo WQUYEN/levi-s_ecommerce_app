@@ -240,6 +240,68 @@ class _HomePageState extends State<HomePage> {
             ),
             SliverToBoxAdapter(
               child: SizedBox(
+                height: 350,
+                child: Obx(() {
+                  if (controller.products.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.products.length,
+                    itemBuilder: (context, index) {
+                      final product = controller.products[index];
+                      return Padding(
+                        padding: index == 0
+                            ? const EdgeInsets.symmetric(horizontal: 20)
+                            : const EdgeInsets.only(right: 20),
+                        child: InkWell(
+                          onTap: () {
+                            controller.onTapProduct(product);
+                          },
+                          child: CuratedItems(
+                            product: product,
+                            size: size,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Curated For You",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        controller.onTapSeeAllProduct();
+                      },
+                      child: Text(
+                        "See All",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
                 height: 400,
                 child: Obx(() {
                   if (controller.products.isEmpty) {

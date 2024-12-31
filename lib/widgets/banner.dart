@@ -3,8 +3,10 @@ import 'package:levis_store/utils/colors.dart';
 
 class MyBanner extends StatelessWidget {
   const MyBanner({super.key});
+
   final imageUrl =
       "https://png.pngtree.com/thumb_back/fw800/background/20240327/pngtree-beauty-fashion-model-girl-wearing-sunglass-with-trendy-clothes-image_15696050.jpg";
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -23,7 +25,7 @@ class MyBanner extends StatelessWidget {
                 const Text(
                   "NEW COLLECTIONS",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     letterSpacing: -2,
                   ),
@@ -33,7 +35,7 @@ class MyBanner extends StatelessWidget {
                     Text(
                       "20",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                         letterSpacing: -3,
                       ),
@@ -60,7 +62,7 @@ class MyBanner extends StatelessWidget {
                 ),
                 MaterialButton(
                   onPressed: () {},
-                  color: Colors.black12,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   child: const Text(
                     "SHOP NOW",
                     style: TextStyle(color: Colors.white, fontSize: 12),
@@ -73,9 +75,9 @@ class MyBanner extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Image.asset(
-                  "assets/levi's_logo.png",
+                  "assets/girls.png",
                   height: size.height * 0.18,
-                  width: size.width * 0.5,
+                  width: size.width * 0.6,
                 ),
               ),
             ),
