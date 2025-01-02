@@ -606,14 +606,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 return Column(
                   children: [
                     const SizedBox(height: 20),
-                    Hero(
-                      tag: imageUrls[index],
-                      child: Image.network(
-                        imageUrls[index],
-                        height: size.height * 0.41,
-                        width: size.width * 0.72,
-                        fit: BoxFit.cover,
-                      ),
+                    Image.network(
+                      imageUrls[index],
+                      height: size.height * 0.41,
+                      width: size.width * 0.72,
+                      fit: BoxFit.cover,
                     ),
                   ],
                 );

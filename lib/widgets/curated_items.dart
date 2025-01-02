@@ -16,7 +16,7 @@ class CuratedItems extends StatelessWidget {
       child: Column(
         children: [
           Hero(
-            tag: product.primaryImage,
+            tag: '${DateTime.now().toString()}-${product.primaryImage}',
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),

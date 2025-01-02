@@ -1,26 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:levis_store/routes/routes.dart';
 import 'package:levis_store/routes/routes_name.dart';
-import 'package:levis_store/services/notification_firebase_service.dart';
+import 'package:levis_store/services/notification_service.dart';
 import 'package:levis_store/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Xử lý thông báo trong nền: ${message.notification?.title}");
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await NotificationService().initNotifications();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  await NotificationService.instance.initialize();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // Nền thanh trạng thái trong suốt
     statusBarIconBrightness: Brightness.dark, // Icon (pin, giờ) màu đen
