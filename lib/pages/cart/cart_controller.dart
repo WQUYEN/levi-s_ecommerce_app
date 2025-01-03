@@ -16,6 +16,32 @@ class CartController extends GetxController {
   var hasError = false.obs;
   var cartLength = 0.obs;
 
+  void onTapDelete(String userId) async {
+    try {
+      isLoading.value = true;
+
+      // Xóa địa chỉ từ Firestore theo ID
+      await FirebaseFirestore.instance.collection("carts").doc(userId).delete();
+
+      // Tải lại danh sách địa chỉ sau khi xóa
+      await fetchCartByUserId(userId);
+
+      Get.snackbar(
+        "Levi's Store",
+        "Address has been successfully deleted.",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      Get.snackbar(
+        "Levi's Store",
+        "Failed to delete address. Please try again. $e",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> fetchCartLength() async {
     try {
       isLoading.value = true;

@@ -54,29 +54,51 @@ class _CartPageState extends State<CartPage> {
               .applyTo(const AlwaysScrollableScrollPhysics()),
           itemBuilder: (context, index) {
             final item = controller.cartList[index];
-            return CartItem(
-              onTap: () {
-                controller.onTapCartItem(productId: item.productId);
-              },
-              onTapCheckBox: () {
-                controller.toggleIsChecked(item.id);
-              },
-              onTapIncrement: () {
-                controller.onTapIncrement(
-                  cartItemId: item.id,
-                  currentQuantity: item.quantity,
+            return Dismissible(
+              key: Key(item.id.toString()),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                color: Colors.red, // Màu nền khi vuốt
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+              onDismissed: (direction) {
+                // Xử lý hành động xóa
+                controller.onTapDelete(item.id);
+                Get.snackbar(
+                  "Address Deleted",
+                  "The address has been successfully removed.",
+                  snackPosition: SnackPosition.BOTTOM,
                 );
               },
-              onTapDecrease: () {
-                controller.onTapDecrease(
-                  cartItemId: item.id,
-                  currentQuantity: item.quantity,
-                );
-              },
-              isChecked: controller.isCheckedMap[item.id] ?? false,
-              // Lấy giá trị từ map
-              isCartPage: true,
-              cart: item,
+              child: CartItem(
+                onTap: () {
+                  controller.onTapCartItem(productId: item.productId);
+                },
+                onTapCheckBox: () {
+                  controller.toggleIsChecked(item.id);
+                },
+                onTapIncrement: () {
+                  controller.onTapIncrement(
+                    cartItemId: item.id,
+                    currentQuantity: item.quantity,
+                  );
+                },
+                onTapDecrease: () {
+                  controller.onTapDecrease(
+                    cartItemId: item.id,
+                    currentQuantity: item.quantity,
+                  );
+                },
+                isChecked: controller.isCheckedMap[item.id] ?? false,
+                // Lấy giá trị từ map
+                isCartPage: true,
+                cart: item,
+              ),
             );
           },
         );

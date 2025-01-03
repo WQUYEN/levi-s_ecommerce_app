@@ -56,8 +56,8 @@ class _AddressPageState extends State<AddressPage> {
                   // Xử lý hành động xóa
                   addressController.onTapDelete(item.id);
                   Get.snackbar(
-                    "Address Deleted",
-                    "The address has been successfully removed.",
+                    "Remove cart item",
+                    "The cart item has been successfully removed.",
                     snackPosition: SnackPosition.BOTTOM,
                   );
                 },
