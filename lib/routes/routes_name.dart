@@ -20,4 +20,6 @@ class RoutesName {
   static const String allCategoryPage = '/allCategoryPage';
   static const String allProductPage = '/allProductPage';
   static const String favoritePage = '/favoritePage';
+  static const String reviewPage = '/reviewPage';
+  static const String addReviewPage = '/addReviewPage';
 }

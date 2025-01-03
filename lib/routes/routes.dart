@@ -11,6 +11,8 @@ import 'package:levis_store/pages/order/order_status_page.dart';
 import 'package:levis_store/pages/order/payment_method_page.dart';
 import 'package:levis_store/pages/product/all_product_page.dart';
 import 'package:levis_store/pages/product_detail/product_detail_page.dart';
+import 'package:levis_store/pages/review/add_review.dart';
+import 'package:levis_store/pages/review/review_page.dart';
 import 'package:levis_store/routes/main_page.dart';
 import 'package:levis_store/routes/routes_name.dart';
 
@@ -116,6 +118,16 @@ class AppRoutes {
         GetPage(
             name: RoutesName.favoritePage,
             page: () => const FavoritePage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.reviewPage,
+            page: () => const ReviewPage(),
+            transitionDuration: const Duration(milliseconds: 250),
+            transition: Transition.cupertino),
+        GetPage(
+            name: RoutesName.addReviewPage,
+            page: () => const AddReview(),
             transitionDuration: const Duration(milliseconds: 250),
             transition: Transition.cupertino),
       ];

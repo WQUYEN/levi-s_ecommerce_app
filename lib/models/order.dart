@@ -11,6 +11,7 @@ class OrderModel {
   bool isMore = false;
   final bool isPayment;
   final String? zpTransToken; // Token thanh toán ZaloPay
+  final bool isRating;
 
   OrderModel({
     required this.id,
@@ -20,6 +21,7 @@ class OrderModel {
     required this.orderDate,
     required this.status,
     required this.isPayment,
+    required this.isRating,
     this.address,
     this.zpTransToken,
   });
@@ -34,6 +36,7 @@ class OrderModel {
       orderDate: data['orderDate'] ?? Timestamp.now(),
       status: data['status'] ?? 'pending',
       address: data['address'],
+      isRating: data['isRating'] ?? false,
       isPayment: data['isPayment'] ?? false,
       zpTransToken: data['zpTransToken'], // Nếu lưu trên Firestore
     );
@@ -47,6 +50,7 @@ class OrderModel {
       'orderDate': orderDate,
       'status': status,
       'address': address,
+      'isRating': isRating,
       'isPayment': isPayment,
       'zpTransToken': zpTransToken, // Nếu cần lưu trên Firestore
     };

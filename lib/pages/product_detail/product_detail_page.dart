@@ -52,6 +52,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final userId = UserInfoService().getUid();
     cartController.fetchCartByUserId(userId!);
     cartController.fetchCartLength();
+    controller.fetchReviewsByProductId(productId);
   }
 
   @override
@@ -106,12 +107,70 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             children: [
               buildListImageProduct(size, imageUrls),
               buildContent(context, product, size),
+              GestureDetector(
+                onTap: () {
+                  showReviewsBottomSheet(context);
+                },
+                child: Center(
+                  child: Text(
+                    'Xem đánh giá',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
+                ),
+              ),
             ],
           ),
         );
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: buildFloatingActionButton(context, size),
+    );
+  }
+
+  void showReviewsBottomSheet(BuildContext context) {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Obx(() {
+          if (controller.reviews.isEmpty) {
+            return const Center(
+              child: Text("No reviews available."),
+            );
+          }
+
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.reviews.length,
+            itemBuilder: (context, index) {
+              final review = controller.reviews[index];
+              return ListTile(
+                leading: CircleAvatar(
+                  child: Image.network(review.avatarUrl),
+                ),
+                title: Text(review.userName),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(review.content),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${review.rating} ⭐',
+                      style: const TextStyle(color: Colors.orange),
+                    ),
+                  ],
+                ),
+                isThreeLine: true,
+              );
+            },
+          );
+        }),
+      ),
     );
   }
 
@@ -142,6 +201,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   Row buildRatingBar(BuildContext context) {
+    final averageRating = controller.calculateAverageRating();
     return Row(
       children: [
         Text(
@@ -149,7 +209,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.inversePrimary,
-              fontSize: 10),
+              fontSize: 14),
         ),
         const SizedBox(width: 5),
         const Icon(
@@ -158,10 +218,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           size: 15,
         ),
         Text(
-          "5.0",
+          "${averageRating.toStringAsFixed(1)} ",
           style: TextStyle(
               color: Theme.of(context).colorScheme.inversePrimary,
-              fontSize: 10),
+              fontSize: 14),
+        ),
+        Text(
+          " ( ${controller.reviews.length} )",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              fontSize: 14),
         ),
         const Spacer(),
         IconButton(

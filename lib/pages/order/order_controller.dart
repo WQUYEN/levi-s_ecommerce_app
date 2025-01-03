@@ -47,6 +47,13 @@ class OrderController extends GetxController {
         arguments: {'productID': productId});
   }
 
+  void onTapReview(String productId, String orderId) {
+    Get.toNamed(RoutesName.addReviewPage, arguments: {
+      'productId': productId,
+      'orderId': orderId,
+    });
+  }
+
   Future<String> createOrder1(double totalPrice) async {
     if (totalPrice <= 0) {
       Get.snackbar(
@@ -172,40 +179,35 @@ class OrderController extends GetxController {
 
   Future<void> getDefaultAddress() async {
     try {
-      // Lấy địa chỉ mặc định
       final defaultQuerySnapshot = await FirebaseFirestore.instance
           .collection('address')
-          .where('userId', isEqualTo: userId) // Lọc theo userId của người dùng
-          .where('isDefault', isEqualTo: true) // Lọc theo isDefault = true
-          .limit(1) // Lấy một địa chỉ mặc định duy nhất
+          .where('userId', isEqualTo: userId)
+          .where('isDefault', isEqualTo: true)
+          .limit(1)
           .get();
 
       if (defaultQuerySnapshot.docs.isNotEmpty) {
-        // Nếu có địa chỉ mặc định, gán vào selectedAddress
         selectedAddress.value =
             Address.fromFirestore(defaultQuerySnapshot.docs.first);
         return;
       }
 
-      // Nếu không có địa chỉ mặc định, lấy địa chỉ đầu tiên
       final firstQuerySnapshot = await FirebaseFirestore.instance
           .collection('address')
-          .where('userId', isEqualTo: userId) // Lọc theo userId của người dùng
-          .limit(1) // Lấy một địa chỉ đầu tiên
+          .where('userId', isEqualTo: userId)
+          .limit(1)
           .get();
 
       if (firstQuerySnapshot.docs.isNotEmpty) {
-        // Gán địa chỉ đầu tiên vào selectedAddress
         selectedAddress.value =
             Address.fromFirestore(firstQuerySnapshot.docs.first);
         return;
       }
 
-      // Nếu không có địa chỉ nào, gán null
       selectedAddress.value = null;
     } catch (e) {
       print("Error fetching address: $e");
-      selectedAddress.value = null; // Gán null trong trường hợp xảy ra lỗi
+      selectedAddress.value = null;
     }
   }
 
@@ -228,38 +230,8 @@ class OrderController extends GetxController {
         'status': 'pending',
         'userId': selectedItems.first.userId,
         'isPayment': isPayment,
+        'isRating': false,
       });
-      // for (var item in selectedItems) {
-      //   // Lấy document màu sắc đã chọn
-      //   var colorDoc = FirebaseFirestore.instance
-      //       .collection('colors')
-      //       .doc(item.selectedColor);
-      //   var colorSnapshot = await colorDoc.get();
-      //
-      //   if (colorSnapshot.exists) {
-      //     var colorData = colorSnapshot.data()!;
-      //     var sizes = colorData['size']; // Danh sách các size của màu sắc này
-      //
-      //     // Duyệt qua các size của màu sắc này và cập nhật số lượng
-      //     var sizeDoc = colorDoc.collection('size').doc(item.selectedSize);
-      //     var sizeSnapshot = await sizeDoc.get();
-      //
-      //     if (sizeSnapshot.exists) {
-      //       var sizeData = sizeSnapshot.data()!;
-      //       int currentQuantity =
-      //           sizeData['quantity'] ?? 0; // Số lượng hiện tại của size
-      //       int newQuantity = currentQuantity -
-      //           item.quantity; // Trừ số lượng theo số lượng đã đặt
-      //
-      //       // Cập nhật lại số lượng trong collection 'sizes'
-      //       await sizeDoc.update({
-      //         'quantity': newQuantity,
-      //       });
-      //     }
-      //   }
-      // }
-
-      // Xóa các item đã chọn trong collection 'carts'
       for (var item in selectedItems) {
         await FirebaseFirestore.instance
             .collection('carts')

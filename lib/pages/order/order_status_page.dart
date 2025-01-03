@@ -247,25 +247,53 @@ class OrderStatusPage extends StatelessWidget {
                                                   BorderRadius.circular(10)),
                                         ),
                                       )
-                                    : ElevatedButton.icon(
-                                        onPressed: () {},
-                                        label: Text(
-                                          "Đánh giá",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                              fontSize: 12),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                          side: const BorderSide(
-                                              color: Colors.red, width: 1.5),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                        ),
-                                      ),
+                                    : order.isRating
+                                        ? ElevatedButton.icon(
+                                            onPressed: null, // Nút vô hiệu hóa
+                                            icon: const Icon(Icons.check_circle,
+                                                color: Colors.grey),
+                                            label: const Text(
+                                              "Đã đánh giá",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.grey[300],
+                                              side: const BorderSide(
+                                                  color: Colors.grey,
+                                                  width: 1.5),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                          )
+                                        : ElevatedButton.icon(
+                                            onPressed: () {
+                                              orderController.onTapReview(
+                                                  orderController.itemId.value,
+                                                  order.id);
+                                            },
+                                            label: Text(
+                                              "Đánh giá",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .surface,
+                                                  fontSize: 12),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.red,
+                                              side: const BorderSide(
+                                                  color: Colors.red,
+                                                  width: 1.5),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                          ),
                               ],
                             ],
                           ),
