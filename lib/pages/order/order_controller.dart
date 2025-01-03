@@ -28,6 +28,7 @@ class OrderController extends GetxController {
   var payResult = ''.obs;
   var payAmount = '10000'.obs;
   var showResult = false.obs;
+  var itemId = ''.obs;
 
   @override
   void onReady() {
@@ -39,6 +40,11 @@ class OrderController extends GetxController {
   void onInit() {
     super.onInit();
     getDefaultAddress(); // Lấy địa chỉ mặc định khi khởi tạo controller
+  }
+
+  void onTapBuyBack(String productId) {
+    Get.toNamed(RoutesName.productDetailPage,
+        arguments: {'productID': productId});
   }
 
   Future<String> createOrder1(double totalPrice) async {

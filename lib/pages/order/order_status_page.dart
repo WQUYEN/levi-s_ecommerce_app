@@ -78,6 +78,8 @@ class OrderStatusPage extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, itemIndex) {
                           final itemOrder = order.items[itemIndex];
+                          orderController.itemId.value = itemOrder['productId'];
+                          print('itemId: ${orderController.itemId.value}');
                           return Container(
                             padding: const EdgeInsets.all(10),
                             margin: const EdgeInsets.all(5),
@@ -194,7 +196,10 @@ class OrderStatusPage extends StatelessWidget {
                               if (order.status == "completed" ||
                                   order.status == "canceled")
                                 ElevatedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    orderController.onTapBuyBack(
+                                        orderController.itemId.value);
+                                  },
                                   label: Text(
                                     "Mua lại",
                                     style: TextStyle(
@@ -216,50 +221,52 @@ class OrderStatusPage extends StatelessWidget {
                                             BorderRadius.circular(10)),
                                   ),
                                 ),
-                              const SizedBox(width: 10),
-                              order.status == 'pending'
-                                  ? ElevatedButton.icon(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.delivery_dining,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surface),
-                                      label: Text(
-                                        "Đang giao hàng",
-                                        style: TextStyle(
+                              if (order.status != "canceled") ...[
+                                const SizedBox(width: 10),
+                                order.status == 'pending'
+                                    ? ElevatedButton.icon(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.delivery_dining,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .surface,
-                                            fontSize: 12),
+                                                .surface),
+                                        label: Text(
+                                          "Đang giao hàng",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
+                                              fontSize: 12),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          side: const BorderSide(
+                                              color: Colors.red, width: 1.5),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                      )
+                                    : ElevatedButton.icon(
+                                        onPressed: () {},
+                                        label: Text(
+                                          "Đánh giá",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
+                                              fontSize: 12),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          side: const BorderSide(
+                                              color: Colors.red, width: 1.5),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
                                       ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        side: const BorderSide(
-                                            color: Colors.red, width: 1.5),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                      ),
-                                    )
-                                  : ElevatedButton.icon(
-                                      onPressed: () {},
-                                      label: Text(
-                                        "Đánh giá",
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .surface,
-                                            fontSize: 12),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        side: const BorderSide(
-                                            color: Colors.red, width: 1.5),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                      ),
-                                    ),
+                              ],
                             ],
                           ),
                         ],
