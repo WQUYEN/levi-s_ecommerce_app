@@ -9,7 +9,6 @@ import 'package:levis_store/services/user_info_service.dart';
 import '../../models/category.dart';
 import '../../models/color_model.dart';
 import '../../models/product.dart';
-import '../../models/review.dart';
 import '../../models/sizeInfo.dart';
 
 class ProductDetailController extends GetxController {
@@ -27,47 +26,11 @@ class ProductDetailController extends GetxController {
   var currentIndex = 0.obs;
   final CartController cartController = Get.put(CartController());
   var isFavorite = false.obs;
-  var reviews = <Review>[].obs;
-  var isLoadingReviews = false.obs;
-  var errorMessageReview = ''.obs;
 
   @override
   void onClose() {
     super.onClose();
-    cartController;
-  }
-
-  double calculateAverageRating() {
-    if (reviews.isEmpty) {
-      return 0.0; // Trả về 0 nếu không có review nào
-    }
-
-    double totalRating =
-        reviews.fold(0.0, (sum, review) => sum + review.rating);
-    return totalRating / reviews.length;
-  }
-
-  Future<void> fetchReviewsByProductId(String productId) async {
-    try {
-      isLoadingReviews.value = true;
-      errorMessageReview.value = '';
-
-      // Lấy dữ liệu từ Firestore
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('reviews')
-          .where('productId', isEqualTo: productId)
-          .get();
-
-      reviews.value = querySnapshot.docs.map((doc) {
-        return Review.fromFirestore(doc);
-      }).toList();
-    } catch (e) {
-      print("Error fetching cart data: $e");
-      errorMessageReview.value = 'Error fetching review data';
-      reviews.value = [];
-    } finally {
-      isLoadingReviews.value = false;
-    }
+    cartController.onClose();
   }
 
   Future<void> checkFavorite({required String productId}) async {

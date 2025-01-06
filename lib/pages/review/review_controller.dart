@@ -12,13 +12,55 @@ class ReviewController extends GetxController {
   TextEditingController contentController = TextEditingController();
   final OrderController orderController =
       Get.put(tag: DateTime.now().toString(), OrderController());
+  var isLoadingReviews = false.obs;
+  var errorMessageReview = ''.obs;
+  var reviews = <Review>[].obs;
+  var productReviews =
+      <String, List<Review>>{}.obs; // Lưu đánh giá theo productId
 
-  // @override
-  // void onClose() {
-  //   // contentController.dispose();
-  //   orderController.dispose();
-  //   super.onClose();
-  // }
+  double calculateAverageRatingForProduct(String productId) {
+    final reviews = productReviews[productId] ?? [];
+    if (reviews.isEmpty) {
+      return 0.0;
+    }
+    final totalRating = reviews.fold(0.0, (sum, review) => sum + review.rating);
+    return totalRating / reviews.length;
+  }
+
+  double calculateAverageRating() {
+    if (reviews.isEmpty) {
+      return 0.0; // Trả về 0 nếu không có review nào
+    }
+
+    double totalRating =
+        reviews.fold(0.0, (sum, review) => sum + review.rating);
+    return totalRating / reviews.length;
+  }
+
+  Future<void> fetchReviewsByProductId(String productId) async {
+    try {
+      isLoadingReviews.value = true;
+      errorMessageReview.value = '';
+
+      // Lấy dữ liệu từ Firestore
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('reviews')
+          .where('productId', isEqualTo: productId)
+          .get();
+
+      reviews.value = querySnapshot.docs.map((doc) {
+        return Review.fromFirestore(doc);
+      }).toList();
+
+      print("Fetching review data success");
+    } catch (e) {
+      print("Error fetching review data: $e");
+      errorMessageReview.value = 'Error fetching review data';
+      reviews.clear();
+    } finally {
+      isLoadingReviews.value = false;
+    }
+  }
 
   Future<void> uploadReview(
       String productId, String orderId, double rating) async {

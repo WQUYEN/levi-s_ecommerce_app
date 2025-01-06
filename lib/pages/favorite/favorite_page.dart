@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:levis_store/pages/favorite/favorite_controller.dart';
 
 import '../../widgets/curated_items.dart';
+import '../review/review_controller.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -13,6 +14,16 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   final FavoriteController controller = Get.put(FavoriteController());
+  final ReviewController reviewController = Get.put(
+      tag: DateTime.now().millisecondsSinceEpoch.toString(),
+      ReviewController());
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    reviewController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -46,6 +57,8 @@ class _FavoritePageState extends State<FavoritePage> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             itemBuilder: (context, index) {
               final product = controller.products[index];
+              final averageRating =
+                  reviewController.calculateAverageRatingForProduct(product.id);
               return InkWell(
                 onTap: () {
                   // Xử lý khi nhấn vào sản phẩm
@@ -54,6 +67,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 child: CuratedItems(
                   product: product,
                   size: size,
+                  averageRating: averageRating,
                 ),
               );
             },

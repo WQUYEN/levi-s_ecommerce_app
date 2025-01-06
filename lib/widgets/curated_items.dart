@@ -6,8 +6,14 @@ import '../models/product.dart';
 class CuratedItems extends StatelessWidget {
   final Product product;
   final Size size;
+  final double averageRating; // Thêm tham số này
 
-  const CuratedItems({super.key, required this.product, required this.size});
+  const CuratedItems({
+    super.key,
+    required this.product,
+    required this.size,
+    required this.averageRating, // Thêm tham số này
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,22 +33,9 @@ class CuratedItems extends StatelessWidget {
               ),
               height: size.height * 0.23,
               width: size.width * 0.4,
-              // child: const Padding(
-              //   padding: EdgeInsets.all(12),
-              //   child: Align(
-              //     alignment: Alignment.topRight,
-              //     child: CircleAvatar(
-              //       radius: 18,
-              //       backgroundColor: Colors.black26,
-              //       child: Icon(Icons.favorite_border),
-              //     ),
-              //   ),
-              // ),
             ),
           ),
-          const SizedBox(
-            height: 7,
-          ),
+          const SizedBox(height: 7),
           SizedBox(
             width: size.width * 0.4,
             child: Row(
@@ -56,16 +49,15 @@ class CuratedItems extends StatelessWidget {
                     fontSize: 10,
                   ),
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
+                const SizedBox(width: 5),
                 const Icon(
                   Icons.star,
                   color: Colors.amber,
                   size: 15,
                 ),
                 Text(
-                  "5.0",
+                  averageRating.toStringAsFixed(1),
+                  // Hiển thị rating trung bình
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.inversePrimary,
                     fontSize: 10,
@@ -96,12 +88,9 @@ class CuratedItems extends StatelessWidget {
                   color: Colors.red,
                 ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               Text(
                 Validator.formatCurrency(product.price + 600000),
-                // Cộng giá trị trước khi định dạng
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 10,

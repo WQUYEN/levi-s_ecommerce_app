@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:levis_store/pages/cart/cart_controller.dart';
+import 'package:levis_store/pages/review/review_controller.dart';
 import 'package:levis_store/services/user_info_service.dart';
 import 'package:levis_store/widgets/banner.dart';
 import 'package:levis_store/widgets/curated_items.dart';
@@ -18,7 +19,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController controller = Get.put(HomeController());
   final CartController cartController = Get.put(CartController());
+  final ReviewController reviewController =
+      Get.put(tag: DateTime.now().toString(), ReviewController());
   final userId = UserInfoService().getUid();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cartController.dispose();
+    reviewController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -253,6 +264,13 @@ class _HomePageState extends State<HomePage> {
                       itemCount: controller.products.length,
                       itemBuilder: (context, index) {
                         final product = controller.products[index];
+                        reviewController.fetchReviewsByProductId(product.id);
+                        final averageRating =
+                            reviewController.calculateAverageRating();
+
+                        // final averageRating =
+                        //     reviewController.calculateAverageRatingForProduct(
+                        //         product.id); // Lấy rating trung bình
                         return Padding(
                           padding: index == 0
                               ? const EdgeInsets.symmetric(horizontal: 20)
@@ -264,6 +282,8 @@ class _HomePageState extends State<HomePage> {
                             child: CuratedItems(
                               product: product,
                               size: size,
+                              averageRating:
+                                  averageRating, // Truyền rating trung bình
                             ),
                           ),
                         );
@@ -315,6 +335,8 @@ class _HomePageState extends State<HomePage> {
                       itemCount: controller.products.length,
                       itemBuilder: (context, index) {
                         final product = controller.products[index];
+                        final averageRating = reviewController
+                            .calculateAverageRatingForProduct(product.id);
                         return Padding(
                           padding: index == 0
                               ? const EdgeInsets.symmetric(horizontal: 20)
@@ -326,6 +348,7 @@ class _HomePageState extends State<HomePage> {
                             child: CuratedItems(
                               product: product,
                               size: size,
+                              averageRating: averageRating,
                             ),
                           ),
                         );

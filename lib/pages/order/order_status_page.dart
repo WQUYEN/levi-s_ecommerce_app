@@ -184,10 +184,10 @@ class OrderStatusPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Tổng tiền: ${Validator.formatCurrency(order.totalPrice)}",
+                            "${Validator.formatCurrency(order.totalPrice)}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Colors.red),
                           ),
                           Row(

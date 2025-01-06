@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../widgets/curated_items.dart';
 import '../home/home_controller.dart';
+import '../review/review_controller.dart';
 
 class AllProductPage extends StatefulWidget {
   const AllProductPage({super.key});
@@ -13,11 +14,15 @@ class AllProductPage extends StatefulWidget {
 
 class _AllProductPageState extends State<AllProductPage> {
   final HomeController controller = Get.put(HomeController());
+  final ReviewController reviewController = Get.put(
+      tag: DateTime.now().millisecondsSinceEpoch.toString(),
+      ReviewController());
 
   @override
   void dispose() {
     // TODO: implement dispose
-    controller;
+    reviewController.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -45,6 +50,8 @@ class _AllProductPageState extends State<AllProductPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             itemBuilder: (context, index) {
               final product = controller.products[index];
+              final averageRating =
+                  reviewController.calculateAverageRatingForProduct(product.id);
               return InkWell(
                 onTap: () {
                   // Xử lý khi nhấn vào sản phẩm
@@ -53,6 +60,7 @@ class _AllProductPageState extends State<AllProductPage> {
                 child: CuratedItems(
                   product: product,
                   size: size,
+                  averageRating: averageRating,
                 ),
               );
             },

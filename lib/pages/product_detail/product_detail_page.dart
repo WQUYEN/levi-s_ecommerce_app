@@ -9,6 +9,7 @@ import 'package:levis_store/widgets/common_widget.dart';
 
 import '../../services/user_info_service.dart';
 import '../cart/cart_controller.dart';
+import '../review/review_controller.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({super.key});
@@ -27,6 +28,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   var currentIndex = 0;
   var selectedColorIndex = 1;
   var selectedSizeIndex = 1;
+  final ReviewController reviewController = Get.put(ReviewController());
 
   String formatCurrency(double price) {
     if (price <= 0) {
@@ -42,6 +44,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     super.dispose();
     controller.dispose();
     cartController.dispose();
+    reviewController.dispose();
   }
 
   @override
@@ -52,7 +55,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final userId = UserInfoService().getUid();
     cartController.fetchCartByUserId(userId!);
     cartController.fetchCartLength();
-    controller.fetchReviewsByProductId(productId);
+    reviewController.fetchReviewsByProductId(productId);
+    print("reviews: ${reviewController.reviews.length}");
   }
 
   @override
@@ -132,44 +136,95 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void showReviewsBottomSheet(BuildContext context) {
     Get.bottomSheet(
       Container(
+        height: MediaQuery.of(context).size.height / 1.5,
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: Obx(() {
-          if (controller.reviews.isEmpty) {
-            return const Center(
-              child: Text("No reviews available."),
-            );
-          }
+        child: Column(
+          children: [
+            // Thanh ngang ở đầu
+            Container(
+              width: 50,
+              height: 5,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            Expanded(
+              child: Obx(() {
+                if (reviewController.reviews.isEmpty) {
+                  return const Center(
+                    child: Text("No reviews available."),
+                  );
+                }
 
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.reviews.length,
-            itemBuilder: (context, index) {
-              final review = controller.reviews[index];
-              return ListTile(
-                leading: CircleAvatar(
-                  child: Image.network(review.avatarUrl),
-                ),
-                title: Text(review.userName),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(review.content),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${review.rating} ⭐',
-                      style: const TextStyle(color: Colors.orange),
-                    ),
-                  ],
-                ),
-                isThreeLine: true,
-              );
-            },
-          );
-        }),
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: reviewController.reviews.length,
+                  itemBuilder: (context, index) {
+                    final review = reviewController.reviews[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Avatar
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundImage: NetworkImage(review.avatarUrl),
+                          ),
+                          const SizedBox(width: 16),
+                          // User Info
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  review.userName,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  review.content,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // Rating
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${review.rating} ⭐',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -201,7 +256,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   Row buildRatingBar(BuildContext context) {
-    final averageRating = controller.calculateAverageRating();
+    final averageRating = reviewController.calculateAverageRating();
     return Row(
       children: [
         Text(
@@ -224,7 +279,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               fontSize: 14),
         ),
         Text(
-          " ( ${controller.reviews.length} )",
+          " ( ${reviewController.reviews.length} )",
           style: TextStyle(
               color: Theme.of(context).colorScheme.inversePrimary,
               fontSize: 14),
