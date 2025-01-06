@@ -56,8 +56,7 @@ class CuratedItems extends StatelessWidget {
                   size: 15,
                 ),
                 Text(
-                  averageRating.toStringAsFixed(1),
-                  // Hiển thị rating trung bình
+                  " $averageRating",
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.inversePrimary,
                     fontSize: 10,
@@ -77,7 +76,7 @@ class CuratedItems extends StatelessWidget {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 Validator.formatCurrency(product.price),

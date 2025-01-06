@@ -329,6 +329,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             controller.onClickBuyNow(
                 product: product!,
                 selectedColor: selectedColor.name,
+                selectedColorId: selectedColor.id,
                 selectedSize: selectedSize.size,
                 selectedQuantity: selectedQuantity);
             print("ADD TO CART clicked");
@@ -368,6 +369,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               controller.onClickAddToCart(
                   product: product!,
                   selectedColor: selectedColor.name,
+                  selectedColorId: selectedColor.id,
                   selectedSize: selectedSize.size,
                   selectedQuantity: selectedQuantity);
               print(

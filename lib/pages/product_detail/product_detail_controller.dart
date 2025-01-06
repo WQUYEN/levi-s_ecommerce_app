@@ -436,6 +436,7 @@ class ProductDetailController extends GetxController {
   void onClickAddToCart({
     required Product product,
     required String selectedColor,
+    required String selectedColorId,
     required String selectedSize,
     required int selectedQuantity,
   }) async {
@@ -455,6 +456,7 @@ class ProductDetailController extends GetxController {
           .where('userId', isEqualTo: userId)
           .where('productId', isEqualTo: product.id)
           .where('selectedColor', isEqualTo: selectedColor)
+          .where('selectedColorId', isEqualTo: selectedColorId)
           .where('selectedSize', isEqualTo: selectedSize)
           .get();
 
@@ -488,6 +490,7 @@ class ProductDetailController extends GetxController {
           'productPrice': product.price,
           'productPrimaryImage': product.primaryImage,
           'selectedColor': selectedColor,
+          'selectedColorId': selectedColorId,
           'selectedSize': selectedSize,
           'quantity': selectedQuantity,
           'createdAt': FieldValue.serverTimestamp(),
@@ -517,6 +520,7 @@ class ProductDetailController extends GetxController {
   void onClickBuyNow({
     required Product product,
     required String selectedColor,
+    required String selectedColorId,
     required String selectedSize,
     required int selectedQuantity,
   }) async {
@@ -533,6 +537,7 @@ class ProductDetailController extends GetxController {
           productPrimaryImage: product.primaryImage,
           quantity: selectedQuantity,
           selectedColor: selectedColor,
+          selectedColorId: selectedColorId,
           selectedSize: selectedSize,
           userId: userId,
           isChecked: false,

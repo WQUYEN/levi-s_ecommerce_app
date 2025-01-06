@@ -264,10 +264,11 @@ class _HomePageState extends State<HomePage> {
                       itemCount: controller.products.length,
                       itemBuilder: (context, index) {
                         final product = controller.products[index];
-                        reviewController.fetchReviewsByProductId(product.id);
-                        final averageRating =
-                            reviewController.calculateAverageRating();
-
+                        reviewController
+                            .fetchReviewsByProductIdHomePage(product.id);
+                        final averageRating = reviewController
+                            .calculateAverageRatingForProduct(product.id);
+                        print(averageRating);
                         // final averageRating =
                         //     reviewController.calculateAverageRatingForProduct(
                         //         product.id); // Lấy rating trung bình

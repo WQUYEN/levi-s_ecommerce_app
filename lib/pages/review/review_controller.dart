@@ -21,7 +21,7 @@ class ReviewController extends GetxController {
   double calculateAverageRatingForProduct(String productId) {
     final reviews = productReviews[productId] ?? [];
     if (reviews.isEmpty) {
-      return 0.0;
+      return 0.0; // Không có đánh giá
     }
     final totalRating = reviews.fold(0.0, (sum, review) => sum + review.rating);
     return totalRating / reviews.length;
@@ -35,6 +35,32 @@ class ReviewController extends GetxController {
     double totalRating =
         reviews.fold(0.0, (sum, review) => sum + review.rating);
     return totalRating / reviews.length;
+  }
+
+  Future<void> fetchReviewsByProductIdHomePage(String productId) async {
+    try {
+      isLoadingReviews.value = true;
+      errorMessageReview.value = '';
+
+      // Lấy dữ liệu từ Firestore
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('reviews')
+          .where('productId', isEqualTo: productId)
+          .get();
+
+      // Lưu dữ liệu reviews cho từng sản phẩm
+      productReviews[productId] = querySnapshot.docs.map((doc) {
+        return Review.fromFirestore(doc);
+      }).toList();
+
+      print("Fetching review data success for product: $productId");
+    } catch (e) {
+      print("Error fetching review data for $productId: $e");
+      errorMessageReview.value = 'Error fetching review data';
+      productReviews[productId] = [];
+    } finally {
+      isLoadingReviews.value = false;
+    }
   }
 
   Future<void> fetchReviewsByProductId(String productId) async {

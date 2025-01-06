@@ -239,6 +239,8 @@ class OrderController extends GetxController {
             .delete();
       }
       await updateProductStock(selectedItems);
+      print(" placing order: ");
+
       Get.back();
       Get.offNamed(RoutesName.successPage);
       Get.snackbar("Levi's Store", "Order placed successfully!",
@@ -252,22 +254,74 @@ class OrderController extends GetxController {
     }
   }
 
+  // Future<void> updateProductStock(List<Cart> selectedItems) async {
+  //   try {
+  //     for (var item in selectedItems) {
+  //       // Truy vấn màu sắc theo trường 'name'
+  //       var colorQuerySnapshot = await FirebaseFirestore.instance
+  //           .collection('colors')
+  //           .where('name', isEqualTo: item.selectedColor)
+  //           .get();
+  //
+  //       if (colorQuerySnapshot.docs.isNotEmpty) {
+  //         var colorDoc = colorQuerySnapshot.docs.first;
+  //
+  //         // Truy vấn size theo trường 'size' trong collection con 'size'
+  //         var sizeQuerySnapshot = await FirebaseFirestore.instance
+  //             .collection('colors')
+  //             .doc(colorDoc.id) // ID của tài liệu màu sắc
+  //             .collection('size')
+  //             .where('size', isEqualTo: item.selectedSize)
+  //             .get();
+  //
+  //         if (sizeQuerySnapshot.docs.isNotEmpty) {
+  //           var sizeDoc = sizeQuerySnapshot.docs.first;
+  //           var sizeData = sizeDoc.data();
+  //           int currentQuantity =
+  //               sizeData['quantity'] ?? 0; // Số lượng hiện tại
+  //           int newQuantity = currentQuantity - item.quantity; // Trừ số lượng
+  //
+  //           if (newQuantity < 0) {
+  //             print("Not enough stock for size: ${item.selectedSize}");
+  //             continue;
+  //           }
+  //
+  //           // Cập nhật lại số lượng trong collection 'size'
+  //           await sizeDoc.reference.update({
+  //             'quantity': newQuantity,
+  //           });
+  //
+  //           print(
+  //               "Updated stock for color: ${item.selectedColor}, size: ${item.selectedSize}, new quantity: $newQuantity");
+  //         } else {
+  //           print(
+  //               "Size not found for color: ${item.selectedColor}, size: ${item.selectedSize}");
+  //         }
+  //       } else {
+  //         print("Color not found: ${item.selectedColor}");
+  //       }
+  //     }
+  //
+  //     Get.snackbar("Levi's Store", "Stock updated successfully!",
+  //         backgroundColor: Colors.green, colorText: Colors.white);
+  //   } catch (e) {
+  //     print("Error updating stock: $e");
+  //     Get.snackbar("Levi's Store", "Failed to update stock. Please try again.",
+  //         backgroundColor: Colors.red, colorText: Colors.white);
+  //   }
+  // }
   Future<void> updateProductStock(List<Cart> selectedItems) async {
     try {
       for (var item in selectedItems) {
-        // Truy vấn màu sắc theo trường 'name'
-        var colorQuerySnapshot = await FirebaseFirestore.instance
+        // Truy vấn màu sắc theo ID (giả sử item.colorId chứa ID của tài liệu 'colors')
+        var colorDoc = await FirebaseFirestore.instance
             .collection('colors')
-            .where('name', isEqualTo: item.selectedColor)
+            .doc(item.selectedColorId) // Sử dụng ID trực tiếp
             .get();
 
-        if (colorQuerySnapshot.docs.isNotEmpty) {
-          var colorDoc = colorQuerySnapshot.docs.first;
-
-          // Truy vấn size theo trường 'size' trong collection con 'size'
-          var sizeQuerySnapshot = await FirebaseFirestore.instance
-              .collection('colors')
-              .doc(colorDoc.id) // ID của tài liệu màu sắc
+        if (colorDoc.exists) {
+          // Truy vấn size trong collection con 'size' thuộc colorDoc
+          var sizeQuerySnapshot = await colorDoc.reference
               .collection('size')
               .where('size', isEqualTo: item.selectedSize)
               .get();
@@ -290,13 +344,13 @@ class OrderController extends GetxController {
             });
 
             print(
-                "Updated stock for color: ${item.selectedColor}, size: ${item.selectedSize}, new quantity: $newQuantity");
+                "Updated stock for color ID: ${item.selectedColorId}, size: ${item.selectedSize}, new quantity: $newQuantity");
           } else {
             print(
-                "Size not found for color: ${item.selectedColor}, size: ${item.selectedSize}");
+                "Size not found for color ID: ${item.selectedColorId}, size: ${item.selectedSize}");
           }
         } else {
-          print("Color not found: ${item.selectedColor}");
+          print("Color not found for ID: ${item.selectedColorId}");
         }
       }
 

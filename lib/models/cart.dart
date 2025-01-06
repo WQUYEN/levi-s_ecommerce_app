@@ -8,6 +8,7 @@ class Cart {
   final String productPrimaryImage;
   int quantity;
   final String selectedColor;
+  final String selectedColorId;
   final String selectedSize;
   final String userId;
   bool isChecked;
@@ -21,6 +22,7 @@ class Cart {
     required this.productPrimaryImage,
     required this.quantity,
     required this.selectedColor,
+    required this.selectedColorId,
     required this.selectedSize,
     required this.userId,
     required this.isChecked,
@@ -39,6 +41,7 @@ class Cart {
       productPrimaryImage: data['productPrimaryImage'] ?? "",
       quantity: data['quantity'] ?? 0,
       selectedColor: data['selectedColor'] ?? "",
+      selectedColorId: data['selectedColorId'] ?? "",
       selectedSize: data['selectedSize'] ?? "",
       userId: data['userId'] ?? "",
       isChecked: data['isChecked'] ?? false,
@@ -56,6 +59,7 @@ class Cart {
       'productPrimaryImage': productPrimaryImage,
       'quantity': quantity,
       'selectedColor': selectedColor,
+      'selectedColorId': selectedColorId,
       'selectedSize': selectedSize,
       'userId': userId,
       'isChecked': isChecked,
